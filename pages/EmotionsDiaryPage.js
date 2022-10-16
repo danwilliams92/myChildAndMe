@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, Pressable, StyleSheet, FlatList } from 'react-native'
+import { View, Text, Pressable, StyleSheet, FlatList, ScrollView } from 'react-native'
 //import TabsBar from '../components/TabsBar'
 import { Bar } from 'react-chartjs-2';
 import {db} from '../firebase';
@@ -23,7 +23,7 @@ ChartJS.register(CategoryScale,
   Legend);
 
 const EmotionsDiaryPage = ({navigation}) => {
-const [checkInsList, setCheckIns] = useState([]);
+  const [checkInsList, setCheckIns] = useState([]);
 
 
     const getCheckInData = async () => {
@@ -73,12 +73,24 @@ const emotionsReported = (categoryLabel, arr) => {
   })
 }
 
+const commentsReported = (arr) => {
+  checkIns.forEach((checkIn) => {
+    for (const [key, value] of Object.entries(checkIn)){
+      const createdOn = checkIn.createdAt;
+      if (key == "helpYouFeelBetter"){
+
+        arr.push({comment: value ,createdOn: createdOn.toDate().toLocaleString()})
+      }
+    }  }
+  )}
+
+
 var feelingTodayArr = [];
 var feelingAboutSchoolArr = [];
 var feelingAboutHomeArr = [];
 
 var feelingBetterComments = [];
-emotionsReported("helpYouFeelBetter", feelingBetterComments);
+commentsReported(feelingBetterComments);
 
 emotionsReported("FeelingToday", feelingTodayArr);
 emotionsReported("FeelingAboutSchool",feelingAboutSchoolArr);
@@ -88,11 +100,11 @@ const countedEmotionsToday = emotionsCounter(feelingTodayArr);
 const countedEmotionsSchool = emotionsCounter(feelingAboutSchoolArr);
 const countedEmotionsHome = emotionsCounter(feelingAboutHomeArr);
 
-console.log(feelingBetterComments);
-
 const chartOptions = {
   responsive: true
 };
+
+
 
         const chartDataToday = {
           labels: Object.keys(countedEmotionsToday),
@@ -108,12 +120,12 @@ const chartOptions = {
         {
           labels: Object.keys(countedEmotionsSchool),
           datasets: [{
-            label: 'Number of emotions reported',
+            label: 'Number of times reported',
             data: Object.values(countedEmotionsSchool),
             backgroundColor: 'rgba(62, 252, 142, 0.8)',
                     
           }]
-        }
+        };
 
         const chartDataHome = {
           labels: Object.keys(countedEmotionsHome),
@@ -123,7 +135,7 @@ const chartOptions = {
             backgroundColor: 'rgba(123, 190, 254, 0.5)'
             
           }]
-        }
+        };
 
 
         let [fontsLoaded] = useFonts({
@@ -135,34 +147,44 @@ const chartOptions = {
 
 
     return (
-        <View style={styles.mainContainer}>
-                  <View style={styles.topHeader}>
-
-        <Text style={styles.topHeaderText}>Emotions Diary</Text>
+      <View style={styles.mainContainer}>
+        <View style={styles.topHeader}>
+          <Text style={styles.topHeaderText}>Emotions Diary</Text>
         </View>
-       
-        <View><Text style={styles.feelBetterHeading}>General Daily Emotions</Text></View>
-
+        <View>
+          <Text style={styles.feelBetterHeading}>General Daily Emotions</Text>
+        </View>
        <Bar options={chartOptions} data={chartDataToday} />
 
        <View><Text style={styles.feelBetterHeading}>Emotions At School</Text></View>
-
        <Bar options={chartOptions} data={chartDataSchool} />
 
        <View><Text style={styles.feelBetterHeading}>Emotions At Home</Text></View>
-
        <Bar options={chartOptions} data={chartDataHome} />
 
-
-        <Text style={styles.feelBetterHeading}>What can I do to help you feel better?</Text>
-
+      <View style={styles.feelBetterContainer}><Text style={[styles.feelBetterHeading, styles.feelBetterTitle]}>What can I do to help you feel better?</Text>
+        {feelingBetterComments.map((comment, index) => {
+          return(
+            <View key={index}><Text style={[styles.topHeaderText, styles.italic]} key={index}>"{comment.comment}"</Text><Text style={[styles.topHeaderText, styles.topHeaderTextSmaller]}>Written on {comment.createdOn}</Text></View>
+          )
+        })}
+      </View>
        <Pressable onPress={() => navigation.navigate('My Child And Me Page')}><HomeButton /></Pressable>
 
-        </View>
+      </View>
     )
-}
+    }
 
 const styles = StyleSheet.create({
+  feelBetterContainer: {
+    backgroundColor: "#56849E",
+    alignItems:"center",
+    textAlign:"center",
+    marginTop: 10
+  },
+  italic: {
+    fontFamily: "italic"
+  },
     topHeader: {
         textAlign: "center",
         backgroundColor: "#56849E",
@@ -174,6 +196,9 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontFamily: "Neucha_400Regular"
 
+      },
+      topHeaderTextSmaller:{
+        fontSize:14
       },
       mainContainer: {
         alignItems: "center",
@@ -198,6 +223,10 @@ const styles = StyleSheet.create({
         textDecorationColor: "#57849E",
         fontFamily: "Neucha_400Regular"
 
+      },
+      feelBetterTitle:{
+        color:"#FCFCFC",
+        textDecorationColor: "#FCFCFC"
       },
       feelBetterTextDate: {
         marginTop: 4,

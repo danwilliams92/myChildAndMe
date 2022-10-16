@@ -8,6 +8,7 @@ import { collection, addDoc, Timestamp } from '@firebase/firestore';
 import {db} from '../firebase';
 //import TabsBar from './TabsBar';
 import { useFonts, Neucha_400Regular } from '@expo-google-fonts/Neucha';
+import * as Progress from 'react-native-progress';
 
 const checkInCollection = collection(db, "checkInEntry");
 
@@ -54,6 +55,29 @@ const Form = () => {
     </View>)}
     ;
 
+    const displayProgressBar = (screenNumber) => {
+        if (screenNumber == 0) {
+            return (
+                <Progress.Bar progress={0} width={200} color="#EFC287"/>
+
+            )
+        } else if (screenNumber == 1){
+            return(
+                <Progress.Bar progress={0.33} width={200} color="#EFC287"/>
+
+            )
+        } else if(screenNumber == 2){
+            return (
+                <Progress.Bar progress={0.66} width={200} color="#EFC287" />
+
+            )} else if(screenNumber == 3){
+                return(
+                    <Progress.Bar progress={1} width={200} color="#EFC287" />
+
+                )
+            }
+    }
+
     const displaybuttons = (screenNumber) => {
     
         if (screenNumber == 0){
@@ -81,7 +105,7 @@ const Form = () => {
             return isFormSubmitted ? <SubmittedButton /> : <FinalScreenButtons />
             }
         
-    }
+    };
 
     const submitForm = () => {
         addDoc(checkInCollection, {
@@ -107,6 +131,7 @@ const Form = () => {
             <View>
                {displaybuttons(screen)}
                 </View>
+                <View>{displayProgressBar(screen)}</View>
         </View>
     )
 }

@@ -59,7 +59,7 @@ offColourSection: {
 modalText: {
     color: "#FCFCFC",
     marginVertical: 4,
-    fontsize: 29,
+    fontsize: 30,
     padding: 4,
     fontFamily: "Neucha_400Regular"
 
@@ -67,7 +67,7 @@ modalText: {
 modalQuestion:{
     color: "#FFFFFF",
     marginVertical: 4,
-    fontSize: 29,
+    fontSize: 31,
     padding: 4,
     fontFamily: "Neucha_400Regular"
 

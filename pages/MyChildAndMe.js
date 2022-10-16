@@ -9,6 +9,8 @@ import EmotionsCheckInPage from './EmotionsCheckInPage';
 import HelpWithEmotionsPage from './HelpWithEmotionsPage'
 import CopingStrategiesPage from './CopingStrategiesPage';
 import NamingYourFeelingsPage from './NamingYourFeelingsPage';
+import GuestLandingModal from '../components/GuestLandingModal';
+import { TransitionPresets } from '@react-navigation/stack';
 
 //const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -16,7 +18,7 @@ const Stack = createNativeStackNavigator();
 
 const MyChildAndMe = () => {
     return (
-        <Stack.Navigator initialRouteName="Emotions Diary" screenOptions={{
+        <Stack.Navigator initialRouteName="Landing Screen" screenOptions={{
             headerShown: false
           }}>
             <Stack.Screen name="My Child And Me Page" component={MyChildAndMePage} screenOptions={{headerShown: false}} />
@@ -25,6 +27,7 @@ const MyChildAndMe = () => {
         <Stack.Screen name="Help With Emotions" component={HelpWithEmotionsPage}  screenOptions={{headerShown:false}}/>
         <Stack.Screen name="Coping Strategies" component={CopingStrategiesPage} screenOptions={{headerShown: false}} />
         <Stack.Screen name="Naming Your Feelings" component={NamingYourFeelingsPage} screenOptions={{headerShown: false}} />
+        <Stack.Screen name="Landing Screen" component={GuestLandingModal} screenOptions={{headerShown: false}} />
 
     </Stack.Navigator>
     );

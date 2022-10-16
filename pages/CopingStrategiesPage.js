@@ -8,6 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const CopingStrategiesPage = ({navigation}) => {
+
     let [fontsLoaded] = useFonts({
         Neucha_400Regular,
       });

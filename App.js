@@ -2,15 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-//import TabsBar from './components/TabsBar';
-//import ProfileSelectPage from './pages/ProfileSelectPage';
 import MyChildAndMe from './pages/MyChildAndMe';
-//import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-//import EmotionsCheckIn from './pages/EmotionsCheckIn';
-//import EmotionsDiary from './pages/EmotionsDiary';
-//import NamingYourFeelings from './pages/NamingYourFeelings';
-//import HelpWithEmotions from './pages/HelpWithEmotions';
-//import CopingStrategies from './pages/CopingStrategies';
+
 
 
 const Stack = createNativeStackNavigator();

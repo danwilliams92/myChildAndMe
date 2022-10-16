@@ -4,12 +4,12 @@
     "slug": "myChildAndMe",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/splashy.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#FFCB9E"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

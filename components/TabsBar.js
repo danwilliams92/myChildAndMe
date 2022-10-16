@@ -1,24 +1,14 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MyChildAndMePage from '../pages/MyChildAndMePage';
+import { View, Pressable } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ProfileSelectPage from '../pages/ProfileSelectPage';
-//import NamingYourFeelingsPage from './NamingYourFeelingsPage';
-import { NavigationContainer } from '@react-navigation/native';
 
-const Tab = createBottomTabNavigator();
-const TabsBar = () => {
+const TabsBar = ({navigation}) => {
     return (
-      <>
-        <Tab.Navigator screenOptions={{header: () => null}}>
-          <Tab.Screen name="My Child And Me" component={MyChildAndMePage} options={{tabBarLabel: '', tabBarIcon: () => <MaterialCommunityIcons name="home" size={38} color="#FFFFFF" /> }}/>
-        </Tab.Navigator>
-      </>
+      <View>
+        <Pressable onPress={() => navigation.navigate('My Child And Me')}> <MaterialCommunityIcons name="home" size={38} color="#FFFFFF" /></Pressable>
+      </View>
     );
 }
 
 
 export default TabsBar
-
-//          <Tab.Screen name="Profile Select" component={ProfileSelectPage} />

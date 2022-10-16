@@ -1,49 +1,139 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, FlatList } from 'react-native'
 //import TabsBar from '../components/TabsBar'
-import { Doughnut } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import {db} from '../firebase';
-import { collection, getDocs, doc } from '@firebase/firestore';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { collection, getDocs, get, doc } from '@firebase/firestore';
+import { Chart as ChartJS, Tooltip, Legend } from 'chart.js';
+import { useFonts, Neucha_400Regular } from '@expo-google-fonts/Neucha';
+import HomeButton from '../components/HomeButton';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+import {
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title
+} from 'chart.js';
 
-const EmotionsDiaryPage = () => {
+ChartJS.register(CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend);
+
+const EmotionsDiaryPage = ({navigation}) => {
 const [checkInsList, setCheckIns] = useState([]);
-    const checkInCollection = collection(db, "checkInEntry");
+
+
     const getCheckInData = async () => {
-          const data = await getDocs(checkInCollection);
-          data.docs.forEach(checkIn => setCheckIns([...checkInsList, checkIn.data()]));
+      const checkInCollection = collection(db, "checkInEntry");
+    await getDocs(checkInCollection).then(response =>{
+      const checkIns = response.docs.map(doc => ({
+        data: doc.data()
+      }));
+      setCheckIns(checkIns);
+    }).catch(error => console.log(error.message));
         };
 
         useEffect(() => {
           getCheckInData();
         },[]);
 
+       
+
+   const checkIns = checkInsList.map(checkIn => {
+    return checkIn.data;
+   });
+
+   
+
+const emotionsCounter = (arr) => {
+  const count = {};
+
+  for (const element of arr) {
+    if (count[element]) {
+      count[element] += 1;
+    } else {
+      count[element] = 1;
+    }
+  }
+  return count;
+};
+
+
+
+const emotionsReported = (categoryLabel, arr) => { 
+  checkIns.forEach((checkIn) => {
+    for (const [key, value] of Object.entries(checkIn)){
+      if (key == categoryLabel && value != ''){
+        arr.push(value);
+      }
+    }
+  })
+}
+
+var feelingTodayArr = [];
+var feelingAboutSchoolArr = [];
+var feelingAboutHomeArr = [];
+
+var feelingBetterComments = [];
+emotionsReported("helpYouFeelBetter", feelingBetterComments);
+
+emotionsReported("FeelingToday", feelingTodayArr);
+emotionsReported("FeelingAboutSchool",feelingAboutSchoolArr);
+emotionsReported("FeelingAboutHome", feelingAboutHomeArr);
+
+const countedEmotionsToday = emotionsCounter(feelingTodayArr);
+const countedEmotionsSchool = emotionsCounter(feelingAboutSchoolArr);
+const countedEmotionsHome = emotionsCounter(feelingAboutHomeArr);
+
+console.log(feelingBetterComments);
+
+const chartOptions = {
+  responsive: true
+};
+
         const chartDataToday = {
-          labels: ['Okay', 'Safe', 'Happy', 'Sad', 'Angry/Frustrated', 'Anxious', 'Afraid', 'Tired'],
+          labels: Object.keys(countedEmotionsToday),
           datasets: [{
-            label: '# of emotions experienced',
-            data: [1,3,2,1,1,2,1,2],
-            backgroundColor: ['rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)'],
-            borderColor: ['rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)'],
-            borderWidth: 2
+            label: 'Number of emotions reported',
+            data: Object.values(countedEmotionsToday),
+            backgroundColor: 'rgba(255, 99, 132, 0.5)'
+            
           }]
         }
+
+        const chartDataSchool = 
+        {
+          labels: Object.keys(countedEmotionsSchool),
+          datasets: [{
+            label: 'Number of emotions reported',
+            data: Object.values(countedEmotionsSchool),
+            backgroundColor: 'rgba(62, 252, 142, 0.8)',
+                    
+          }]
+        }
+
+        const chartDataHome = {
+          labels: Object.keys(countedEmotionsHome),
+          datasets: [{
+            label: 'Number of times reported',
+            data: Object.values(countedEmotionsHome),
+            backgroundColor: 'rgba(123, 190, 254, 0.5)'
+            
+          }]
+        }
+
+
+        let [fontsLoaded] = useFonts({
+          Neucha_400Regular,
+        });
+        if(!fontsLoaded){ 
+            return null;
+        }
+
+
     return (
         <View style={styles.mainContainer}>
                   <View style={styles.topHeader}>
@@ -51,22 +141,23 @@ const [checkInsList, setCheckIns] = useState([]);
         <Text style={styles.topHeaderText}>Emotions Diary</Text>
         </View>
        
-        <Doughnut data={chartDataToday} />
-        <Text>General daily emotions</Text>
+        <View><Text style={styles.feelBetterHeading}>General Daily Emotions</Text></View>
 
-        <Doughnut data={chartDataToday} />
-        <Text>Emotions at home</Text>
+       <Bar options={chartOptions} data={chartDataToday} />
 
-        <Doughnut data={chartDataToday} />
-        <Text>Emotions at school</Text>
+       <View><Text style={styles.feelBetterHeading}>Emotions At School</Text></View>
+
+       <Bar options={chartOptions} data={chartDataSchool} />
+
+       <View><Text style={styles.feelBetterHeading}>Emotions At Home</Text></View>
+
+       <Bar options={chartOptions} data={chartDataHome} />
+
+
         <Text style={styles.feelBetterHeading}>What can I do to help you feel better?</Text>
 
-        <View style={styles.diarySectionContainer}>
- {checkInsList && checkInsList.map((checkIn) => {
-          return(<View key={checkIn.createdAt}><Text style={styles.feelBetterText}>"{checkIn.helpYouFeelBetter}"</Text><Text style={styles.feelBetterTextDate}>Written: {String(checkIn.createdAt.toDate())}</Text></View>);
-        })}
+       <Pressable onPress={() => navigation.navigate('My Child And Me Page')}><HomeButton /></Pressable>
 
-        </View>
         </View>
     )
 }
@@ -81,9 +172,13 @@ const styles = StyleSheet.create({
         color: "#ffffff",
         paddingVertical: 6,
         fontSize: 26,
+        fontFamily: "Neucha_400Regular"
+
       },
       mainContainer: {
         alignItems: "center",
+        flex:1,
+        justifyContent:"space-between"
       },
       diarySectionContainer: {
         backgroundColor: "#57849E",
@@ -96,17 +191,28 @@ const styles = StyleSheet.create({
         fontSize: 18
       },
       feelBetterHeading: {
-        marginVertical: 10,
+        marginVertical: 14,
         color: "#57849E",
         fontSize: 20,
         textDecorationLine: 'underline',
-        textDecorationColor: "57849E"
+        textDecorationColor: "#57849E",
+        fontFamily: "Neucha_400Regular"
+
       },
       feelBetterTextDate: {
         marginTop: 4,
         color: "#FCFCFC",
-        fontSize: 14
+        fontSize: 14,
+        fontFamily: "Neucha_400Regular"
+
       }
 });
 
 export default EmotionsDiaryPage
+
+/*  <View style={styles.diarySectionContainer}>
+ {checkInsList && checkInsList.map((checkIn) => {
+          return(<View key={checkIn.createdAt}><Text style={styles.feelBetterText}>"{checkIn.helpYouFeelBetter}"</Text><Text style={styles.feelBetterTextDate}>Written: {String(checkIn.createdAt.toDate())}</Text></View>);
+        })}
+
+        */

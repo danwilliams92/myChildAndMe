@@ -12,7 +12,8 @@
       "backgroundColor": "#FFCB9E"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/45b89930-ba8d-4c12-8d9c-0b1268466584"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +21,8 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.danwilliams.mychildandme",
-      "buildNumber": "1.0.0"    },
+      "buildNumber": "1.0.0"
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -31,6 +33,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "45b89930-ba8d-4c12-8d9c-0b1268466584"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

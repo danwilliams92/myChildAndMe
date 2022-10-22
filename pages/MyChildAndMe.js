@@ -1,20 +1,15 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-//import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyChildAndMePage from './MyChildAndMePage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-//import { NavigationContainer } from '@react-navigation/native';
 import EmotionsDiaryPage from './EmotionsDiaryPage';
 import EmotionsCheckInPage from './EmotionsCheckInPage';
 import HelpWithEmotionsPage from './HelpWithEmotionsPage'
 import CopingStrategiesPage from './CopingStrategiesPage';
 import NamingYourFeelingsPage from './NamingYourFeelingsPage';
-import GuestLandingModal from '../components/GuestLandingModal';
-import { TransitionPresets } from '@react-navigation/stack';
+import GuestLanding from '../components/GuestLanding';
 
-//const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 
 const MyChildAndMe = () => {
     return (
@@ -27,7 +22,7 @@ const MyChildAndMe = () => {
         <Stack.Screen name="Help With Emotions" component={HelpWithEmotionsPage}  screenOptions={{headerShown:false}}/>
         <Stack.Screen name="Coping Strategies" component={CopingStrategiesPage} screenOptions={{headerShown: false}} />
         <Stack.Screen name="Naming Your Feelings" component={NamingYourFeelingsPage} screenOptions={{headerShown: false}} />
-        <Stack.Screen name="Landing Screen" component={GuestLandingModal} screenOptions={{headerShown: false}} />
+        <Stack.Screen name="Landing Screen" component={GuestLanding} screenOptions={{headerShown: false}} />
 
     </Stack.Navigator>
     );

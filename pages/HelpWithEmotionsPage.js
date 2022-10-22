@@ -30,8 +30,12 @@ const HelpWithEmotionsPage = ({navigation}) => {
       </View>
       <View style={styles.contentGroup}>
         
-        <Pressable onPress={() => navigation.navigate('My Child And Me', {screen: 'Naming Your Feelings'})}><ContentCard IconName="thought-bubble-outline" IconColor="green" CardTitle="Naming Your Feelings" cardStyle={cardStyle}/></Pressable>
-        <Pressable onPress={() => navigation.navigate('My Child And Me', {screen: 'Coping Strategies'})}><ContentCard IconName="meditation" IconColor="#fdbc85" CardTitle="Coping Strategies" cardStyle={cardStyle}/></Pressable>
+        <Pressable onPress={() => navigation.navigate('My Child And Me', {screen: 'Naming Your Feelings'})}>
+          <ContentCard IconName="thought-bubble-outline" IconColor="green" CardTitle="Naming Your Feelings" cardStyle={cardStyle}/>
+          </Pressable>
+        <Pressable onPress={() => navigation.navigate('My Child And Me', {screen: 'Coping Strategies'})}>
+          <ContentCard IconName="meditation" IconColor="#fdbc85" CardTitle="Coping Strategies" cardStyle={cardStyle}/>
+          </Pressable>
       </View>       
       <Pressable onPress={() => navigation.navigate('My Child And Me Page')}><HomeButton /></Pressable>
 

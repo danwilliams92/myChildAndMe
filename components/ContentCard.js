@@ -1,10 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useFonts, Neucha_400Regular } from '@expo-google-fonts/Neucha';
 
-//import NamingYourFeelingsPage from './NamingYourFeelingsPage';
-//            <FontAwesome name="leaf" color="green" size={40} />
 
 const ContentCard = (props) => {
     let [fontsLoaded] = useFonts({

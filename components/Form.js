@@ -6,7 +6,6 @@ import FeelingToday from './FeelingToday';
 import HelpYouFeelBetter from './HelpYouFeelBetter';
 import { collection, addDoc, Timestamp } from '@firebase/firestore';
 import {db} from '../firebase';
-//import TabsBar from './TabsBar';
 import { useFonts, Neucha_400Regular } from '@expo-google-fonts/Neucha';
 import * as Progress from 'react-native-progress';
 
@@ -51,7 +50,9 @@ const Form = () => {
         return (
     <View style={styles.buttonGroupFinal}>
                 <Pressable onPress={submitForm} style={styles.formButtonScreenFour}><Text style={styles.buttonText}>Save check-in</Text></Pressable>                                                          
-        <Pressable style={styles.formButtonScreenFour} onPress={() => { setScreen((currentScreen) => currentScreen -1)}}><Text style={styles.buttonText}>Back</Text></Pressable>
+        <Pressable style={styles.formButtonScreenFour} onPress={() => { setScreen((currentScreen) => currentScreen -1)}}>
+            <Text style={styles.buttonText}>Back</Text>
+            </Pressable>
     </View>)}
     ;
 
@@ -59,46 +60,51 @@ const Form = () => {
         if (screenNumber == 0) {
             return (
                 <Progress.Bar progress={0} width={200} color="#EFC287"/>
-
             )
         } else if (screenNumber == 1){
             return(
                 <Progress.Bar progress={0.33} width={200} color="#EFC287"/>
-
             )
         } else if(screenNumber == 2){
             return (
                 <Progress.Bar progress={0.66} width={200} color="#EFC287" />
-
             )} else if(screenNumber == 3){
                 return(
                     <Progress.Bar progress={1} width={200} color="#EFC287" />
-
                 )
             }
     }
 
     const displaybuttons = (screenNumber) => {
-    
         if (screenNumber == 0){
             return(
                 <View style={styles.buttonGroup}>
-                <Pressable style={styles.formButtonScreenOne} onPress={() => {setScreen((currentScreen) => currentScreen + 1)}}><Text style={styles.buttonText}>Next</Text></Pressable>
+                <Pressable style={styles.formButtonScreenOne} onPress={() => {setScreen((currentScreen) => currentScreen + 1)}}>
+                    <Text style={styles.buttonText}>Next</Text>
+                </Pressable>
                 </View>
             )
         } else if (screenNumber == 1){
             return (
                 <View style={styles.buttonGroup}>
-                                    <Pressable style={styles.formButtonScreenTwo} onPress={() => { setScreen((currentScreen) => currentScreen -1)}}><Text style={styles.buttonText}>Back</Text></Pressable>
-                <Pressable style={styles.formButtonScreenTwo} onPress={() => {setScreen((currentScreen) => currentScreen + 1)}}><Text style={styles.buttonText}>Next</Text></Pressable>
+                    <Pressable style={styles.formButtonScreenTwo} onPress={() => { setScreen((currentScreen) => currentScreen -1)}}>
+                        <Text style={styles.buttonText}>Back</Text>
+                    </Pressable>
+                    <Pressable style={styles.formButtonScreenTwo} onPress={() => {setScreen((currentScreen) => currentScreen + 1)}}>
+                        <Text style={styles.buttonText}>Next</Text>
+                    </Pressable>
                 </View>
             )
         } else if (screenNumber == 2) {
             return (
                 <View style={styles.buttonGroup}>
-                                    <Pressable style={styles.formButtonScreenThree} onPress={() => { setScreen((currentScreen) => currentScreen -1)}}><Text style={styles.buttonText}>Back</Text></Pressable>
+                    <Pressable style={styles.formButtonScreenThree} onPress={() => { setScreen((currentScreen) => currentScreen -1)}}>
+                        <Text style={styles.buttonText}>Back</Text>
+                        </Pressable>
 
-                <Pressable style={styles.formButtonScreenThree} onPress={() => {setScreen((currentScreen) => currentScreen + 1)}}><Text style={styles.buttonText}>Next</Text></Pressable>
+                    <Pressable style={styles.formButtonScreenThree} onPress={() => {setScreen((currentScreen) => currentScreen + 1)}}>
+                        <Text style={styles.buttonText}>Next</Text>
+                    </Pressable>
                 </View>
             )
         } else if (screenNumber == 3) {

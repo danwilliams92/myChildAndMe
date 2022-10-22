@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, Pressable, StyleSheet, FlatList, ScrollView } from 'react-native'
-//import TabsBar from '../components/TabsBar'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { Bar } from 'react-chartjs-2';
 import {db} from '../firebase';
 import { collection, getDocs, get, doc } from '@firebase/firestore';
@@ -25,44 +24,24 @@ ChartJS.register(CategoryScale,
 const EmotionsDiaryPage = ({navigation}) => {
   const [checkInsList, setCheckIns] = useState([]);
 
-
     const getCheckInData = async () => {
       const checkInCollection = collection(db, "checkInEntry");
-    await getDocs(checkInCollection).then(response =>{
-      const checkIns = response.docs.map(doc => ({
+      await getDocs(checkInCollection).then(response =>{
+        const checkIns = response.docs.map(doc => ({
         data: doc.data()
-      }));
-      setCheckIns(checkIns);
-    }).catch(error => console.log(error.message));
+        }));
+        setCheckIns(checkIns);
+      }).catch(error => console.log(error.message));
         };
 
         useEffect(() => {
           getCheckInData();
         },[]);
 
-       
-
    const checkIns = checkInsList.map(checkIn => {
     return checkIn.data;
    });
-
    
-
-const emotionsCounter = (arr) => {
-  const count = {};
-
-  for (const element of arr) {
-    if (count[element]) {
-      count[element] += 1;
-    } else {
-      count[element] = 1;
-    }
-  }
-  return count;
-};
-
-
-
 const emotionsReported = (categoryLabel, arr) => { 
   checkIns.forEach((checkIn) => {
     for (const [key, value] of Object.entries(checkIn)){
@@ -78,23 +57,38 @@ const commentsReported = (arr) => {
     for (const [key, value] of Object.entries(checkIn)){
       const createdOn = checkIn.createdAt;
       if (key == "helpYouFeelBetter"){
-
         arr.push({comment: value ,createdOn: createdOn.toDate().toLocaleString()})
       }
     }  }
   )}
 
 
-var feelingTodayArr = [];
-var feelingAboutSchoolArr = [];
-var feelingAboutHomeArr = [];
 
 var feelingBetterComments = [];
 commentsReported(feelingBetterComments);
 
+
+var feelingTodayArr = [];
+var feelingAboutSchoolArr = [];
+var feelingAboutHomeArr = [];
+
 emotionsReported("FeelingToday", feelingTodayArr);
 emotionsReported("FeelingAboutSchool",feelingAboutSchoolArr);
 emotionsReported("FeelingAboutHome", feelingAboutHomeArr);
+
+const emotionsCounter = (arr) => {
+  const count = {};
+
+  for (const element of arr) {
+    if (count[element]) {
+      count[element] += 1;
+    } else {
+      count[element] = 1;
+    }
+  }
+  return count;
+};
+
 
 const countedEmotionsToday = emotionsCounter(feelingTodayArr);
 const countedEmotionsSchool = emotionsCounter(feelingAboutSchoolArr);
